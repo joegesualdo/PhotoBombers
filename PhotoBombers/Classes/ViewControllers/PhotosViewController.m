@@ -54,7 +54,7 @@
     
     // store the access token in NSUserDefaults
     // NSUserDefaults are great because it lets you save data to disk and get it back easily. It's made for storing preferences, but it works well for storing data also
-    // FYI: NSUserDefaults ins't meant to store access tokens. You should treat access tokens like passwords. Because if someone has it, they can do whatever they want on your behalf;
+    // FYI: NSUserDefaults ins't meant to store access tokens. You should treat access tokens like passwords. Because if someone has it, they can do whatever they want on your behalf. Best place to store passwords is in the keychain. It's meant to store passwords.
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     // This will get the value for accessToken in NSUserDefaults
     self.accessToken = [userDefaults objectForKey:@"accessToken"];
@@ -76,7 +76,27 @@
             
         }];
     } else {
-        NSLog(@"Signed In!");
+        //we need an NSURLSession, so we get the shared session
+        // This is shared everywhere in your app
+        NSURLSession *session = [NSURLSession sharedSession];
+        // create a string that represent the url
+        NSString *urlString = [[NSString alloc]initWithFormat:@"https://api.instagram.com/v1/tags/photobomb/media/recent?access_token=%@", self.accessToken];
+        // Need to make a url that we can pass to request
+        NSURL *url = [[NSURL alloc]initWithString:urlString];
+        // Make a request that we can then pass on to our task (NSURLSessionDownloadTask)
+        NSURLRequest *request = [[NSURLRequest alloc]initWithURL:url];
+        // make an NSURLSessionDownloadTask to download data fromt he internet
+        // FYI: The data in NSURLSessionDownloadTask is downloaded for you and saved on disk; then int he completion handler you get back the location where it saved the response fromt eh netwrok
+        NSURLSessionDownloadTask *task = [session downloadTaskWithRequest:request completionHandler:^(NSURL *location, NSURLResponse *response, NSError *error) {
+            // So location it where on disk NSURLSessionDownloadTask saved teh response
+            // FYI: we use initWithContentsOfURL and we pass it a fiel location and not a domain, that's because URL don't need to go to the internet. They can be files on your location machine
+            // NSUTF8StringEcnoding is the most common. Most things will be this, you will rarely need to say anthing else
+            NSString *text = [[NSString alloc]initWithContentsOfURL:location encoding:NSUTF8StringEncoding error:nil];
+            // We print out the response
+            NSLog(@"text: %@", text);
+        }];
+        // We need to use the task we created. So we call the task:
+        [task resume];
     }
     
 }
