@@ -12,6 +12,7 @@
 		A1A6F7B95D3B4ED28F643B20 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2D0A4655ED504D9481DA7AAF /* AppDelegate.m */; };
 		A1CA4906FB77489FB7BCB2BE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B0C82BF545594521B043AC0B /* Foundation.framework */; };
 		E907E85919C75A9200B62CB5 /* PhotosViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E907E85819C75A9200B62CB5 /* PhotosViewController.m */; };
+		E9D7033019C76BC4003811F4 /* PhotoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E9D7032F19C76BC4003811F4 /* PhotoCell.m */; };
 		ED84C9BD1B314CFFBD5192EB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 4101E1DC78BD466C9C589F3C /* main.m */; };
 /* End PBXBuildFile section */
 
@@ -39,6 +40,8 @@
 		E3AD8C473FA54785999BA199 /* libPods-unit_tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-unit_tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E907E85719C75A9200B62CB5 /* PhotosViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotosViewController.h; sourceTree = "<group>"; };
 		E907E85819C75A9200B62CB5 /* PhotosViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotosViewController.m; sourceTree = "<group>"; };
+		E9D7032E19C76BC4003811F4 /* PhotoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoCell.h; sourceTree = "<group>"; };
+		E9D7032F19C76BC4003811F4 /* PhotoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoCell.m; sourceTree = "<group>"; };
 		F47B467D55B944DD9395A492 /* UnitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UnitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FF831F4246FC40548D51108D /* UnitTests-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "UnitTests-Info.plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -196,6 +199,7 @@
 		AC5AFF25FE154849A3B55C7A /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				E9D7032D19C76BA7003811F4 /* PhotoCell */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -240,6 +244,15 @@
 				E907E85819C75A9200B62CB5 /* PhotosViewController.m */,
 			);
 			name = Photos;
+			sourceTree = "<group>";
+		};
+		E9D7032D19C76BA7003811F4 /* PhotoCell */ = {
+			isa = PBXGroup;
+			children = (
+				E9D7032E19C76BC4003811F4 /* PhotoCell.h */,
+				E9D7032F19C76BC4003811F4 /* PhotoCell.m */,
+			);
+			name = PhotoCell;
 			sourceTree = "<group>";
 		};
 		EA9C4CF636B44A82816593DF /* Classes */ = {
@@ -401,6 +414,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E9D7033019C76BC4003811F4 /* PhotoCell.m in Sources */,
 				A1A6F7B95D3B4ED28F643B20 /* AppDelegate.m in Sources */,
 				E907E85919C75A9200B62CB5 /* PhotosViewController.m in Sources */,
 				ED84C9BD1B314CFFBD5192EB /* main.m in Sources */,

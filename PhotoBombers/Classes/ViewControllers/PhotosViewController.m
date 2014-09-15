@@ -7,6 +7,7 @@
 //
 
 #import "PhotosViewController.h"
+#import "PhotoCell.h"
 
 @interface PhotosViewController ()
 
@@ -42,7 +43,8 @@
     
     // When we call dequeReusableCellWithReuseidentifier in our cellForRowAtIndexPath, that deques a cell from the reuse que. Since we're aren't using interface builder, we are going to set this cell identifier in code.
     // for registersterClass we tell it what class to use when we ask for a cell with a certain identifier (in this cas: "photo")
-    [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"photo"];
+    // We plass in our custom class to registerClass: PhotoCell
+    [self.collectionView registerClass:[PhotoCell class] forCellWithReuseIdentifier:@"photo"];
     
     // we are setting the background to white so we can tell the collection view loaded (because app normally launched with black background)
     self.collectionView.backgroundColor = [UIColor whiteColor];
