@@ -92,6 +92,26 @@
 }
 
 -(void)like{
+    NSURLSession *session = [NSURLSession sharedSession];
+    NSString *accessToken = [[NSUserDefaults standardUserDefaults] objectForKey:@"accessToken"];
+    NSString *urlString = [[NSString alloc] initWithFormat:@"https://api.instagram.com/v1/media/%@/likes?access_token=%@", self.photo[@"id"], accessToken];
+    NSURL *url = [[NSURL alloc]initWithString:urlString];
+    // Since we need to change our request from the default GET, we need to create a mutable request:
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc]initWithURL:url];
+    // We set the HTTPMethod property on request to POST
+    request.HTTPMethod = @"POST";
+    // Instead of using NSURLSessionDownloadTask we use NSURLSessionDataTask to download data, becuuse is doesn't save a file to disk. We use this since we only need the variable here 'task'
+    NSURLSessionDataTask *task = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            // showLikeCompletion will happen on the main thread (since it's UI) and it will happen after the like completes
+            [self showLikeCompletion];
+        });
+    }];
+    [task resume];
+    
+}
+
+-(void)showLikeCompletion{
     UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Liked!" message:nil delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
     [alert show];
     
@@ -103,4 +123,5 @@
         [alert dismissWithClickedButtonIndex:0 animated:YES];
     });
 }
+
 @end
