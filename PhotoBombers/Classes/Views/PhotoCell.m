@@ -27,9 +27,20 @@
     if (self) {
         // now when the photo cell initializes we will set the imageView property
         self.imageView = [[UIImageView alloc] init];
+        
+        //define a tap gesture recognizer
+        // set's target of tap to the cell
+        // when it's tap, it will trigger the like method
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(like)];
+        // it will say that this gesture recognizer is only triggered when you do 2 taps
+        tap.numberOfTapsRequired = 2;
+        // No wo add the tap gesture recognizer we created to this view
+        [self addGestureRecognizer:tap];
+        
         // content view is where all your views should go. You SHOUDNT put anything inside self or any of it's other views
         // here we add a subview in our content view and have that image view be our property imageView (so a UIImageView)
         [self.contentView addSubview:self.imageView];
+        
     }
     return self;
 }
@@ -78,5 +89,10 @@
     }];
     [task resume];
     
+}
+
+-(void)like{
+    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Likes" message:nil delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
+    [alert show];
 }
 @end
