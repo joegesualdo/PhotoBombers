@@ -53,7 +53,7 @@
     // instagram signin
     // response object is from simple auth and gives us all the information about our use
     // So now when you open the app. the instagram sheet will come up and ask you to enter your credentials
-    [SimpleAuth authorize:@"instagram" completion:^(id responseObject, NSError *error) {
+    [SimpleAuth authorize:@"instagram" completion:^(NSDictionary *responseObject, NSError *error) {
         // The response object provides us with an access token
         //  token - our access token. This lets' us connect to instagram later and lets us create authenticated requests
         NSLog(@"Response: %@", responseObject);
