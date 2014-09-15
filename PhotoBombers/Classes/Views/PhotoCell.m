@@ -10,6 +10,15 @@
 
 @implementation PhotoCell
 
+//override our setPhoto. This gets called anytime someone writes "cell.photo = ..."
+-(void)setPhoto:(NSDictionary *)photo
+{
+    _photo = photo;
+    NSURL *url = [[NSURL alloc]initWithString:_photo[@"images"][@"standard_resolution"][@"url"]];
+                  
+    [self downloadPhotoWithURL:url];
+}
+
 // This is the initializer
 - (id)initWithFrame:(CGRect)frame
 {
@@ -17,8 +26,6 @@
     if (self) {
         // now when the photo cell initializes we will set the imageView property
         self.imageView = [[UIImageView alloc] init];
-        //set the image for imageView
-        self.imageView.image = [UIImage imageNamed:@"Treehouse"];
         // content view is where all your views should go. You SHOUDNT put anything inside self or any of it's other views
         // here we add a subview in our content view and have that image view be our property imageView (so a UIImageView)
         [self.contentView addSubview:self.imageView];
@@ -38,13 +45,22 @@
     self.imageView.frame = self.contentView.bounds;
 }
 
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
-{
-    // Drawing code
+-(void)downloadPhotoWithURL: (NSURL *)url{
+    NSURLSession *session = [NSURLSession sharedSession];
+    NSURLRequest *request = [[NSURLRequest alloc]initWithURL:url];
+    
+    NSURLSessionDownloadTask *task = [session downloadTaskWithRequest:request completionHandler:^(NSURL *location, NSURLResponse *response, NSError *error) {
+        
+        NSData *data = [[NSData alloc]initWithContentsOfURL:location];
+        
+        UIImage *image = [[UIImage alloc]initWithData:data];
+        // This dispactches asycronously so we dont block this background que. And we are going to dispatch to the main que
+        // If we wouln't have wrapped this code in this, the method wouldn't call properly because the ui isn't meant to be called from the background. This runs the code in the main thread
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.imageView.image = image;
+        });
+    }];
+    [task resume];
+    
 }
-*/
-
 @end

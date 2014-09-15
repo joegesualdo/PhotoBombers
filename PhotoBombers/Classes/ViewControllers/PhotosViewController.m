@@ -13,6 +13,7 @@
 @interface PhotosViewController ()
 
 @property(strong,nonatomic)NSString *accessToken;
+@property(strong, nonatomic)NSArray *photos;
 
 @end
 
@@ -76,39 +77,7 @@
             
         }];
     } else {
-        //we need an NSURLSession, so we get the shared session
-        // This is shared everywhere in your app
-        NSURLSession *session = [NSURLSession sharedSession];
-        // create a string that represent the url
-        NSString *urlString = [[NSString alloc]initWithFormat:@"https://api.instagram.com/v1/tags/photobomb/media/recent?access_token=%@", self.accessToken];
-        // Need to make a url that we can pass to request
-        NSURL *url = [[NSURL alloc]initWithString:urlString];
-        // Make a request that we can then pass on to our task (NSURLSessionDownloadTask)
-        NSURLRequest *request = [[NSURLRequest alloc]initWithURL:url];
-        // make an NSURLSessionDownloadTask to download data fromt he internet
-        // FYI: The data in NSURLSessionDownloadTask is downloaded for you and saved on disk; then int he completion handler you get back the location where it saved the response fromt eh netwrok
-        NSURLSessionDownloadTask *task = [session downloadTaskWithRequest:request completionHandler:^(NSURL *location, NSURLResponse *response, NSError *error) {
-            // So location it where on disk NSURLSessionDownloadTask saved teh response
-            // FYI: we use initWithContentsOfURL and we pass it a fiel location and not a domain, that's because URL don't need to go to the internet. They can be files on your location machine
-            // NSUTF8StringEcnoding is the most common. Most things will be this, you will rarely need to say anthing else
-//            NSString *text = [[NSString alloc]initWithContentsOfURL:location encoding:NSUTF8StringEncoding error:nil];
-//            // We print out the response
-//            NSLog(@"text: %@", text);
-            //NSData is just an object that holds raw data. It doesn't interpret it into anything. Like NSString takes the data and turns it into string
-            NSData *data = [[NSData alloc]initWithContentsOfURL:location];
-            // turn raw data into json
-            //NSJSONSerialization is a class for transferting JSON into objective c objectskjj
-            // What is kNilOptions??
-            // It's just a constant for nil objects
-            NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
-            // make an array with the photos
-            // easiest way to get all the photos is to use method valueForKeyPath, which traverses through all the levels of the response dictionary. All we do is pass it the path using dot notation
-            // This will get all the elements that have this path
-            NSArray *photos = [responseDictionary valueForKeyPath:@"data.images.standard_resolution.url"];
-            NSLog(@"photos: %@", photos);
-        }];
-        // We need to use the task we created. So we call the task:
-        [task resume];
+        [self refresh];
     }
     
 }
@@ -117,17 +86,61 @@
 
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return 10;
+    // set number of items in the collection view to number of photos we have
+    return [self.photos count];
 }
 
 -(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"photo" forIndexPath:indexPath];
+    PhotoCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"photo" forIndexPath:indexPath];
     
     // set background color of cell so you can see them on the screen
     cell.backgroundColor = [UIColor lightGrayColor];
+    cell.photo = self.photos[indexPath.row];
     
     return cell;
+}
+
+-(void)refresh
+{
+    //we need an NSURLSession, so we get the shared session
+    // This is shared everywhere in your app
+    NSURLSession *session = [NSURLSession sharedSession];
+    // create a string that represent the url
+    NSString *urlString = [[NSString alloc]initWithFormat:@"https://api.instagram.com/v1/tags/photobomb/media/recent?access_token=%@", self.accessToken];
+    // Need to make a url that we can pass to request
+    NSURL *url = [[NSURL alloc]initWithString:urlString];
+    // Make a request that we can then pass on to our task (NSURLSessionDownloadTask)
+    NSURLRequest *request = [[NSURLRequest alloc]initWithURL:url];
+    // make an NSURLSessionDownloadTask to download data fromt he internet
+    // FYI: The data in NSURLSessionDownloadTask is downloaded for you and saved on disk; then int he completion handler you get back the location where it saved the response fromt eh netwrok
+    NSURLSessionDownloadTask *task = [session downloadTaskWithRequest:request completionHandler:^(NSURL *location, NSURLResponse *response, NSError *error) {
+        // So location it where on disk NSURLSessionDownloadTask saved teh response
+        // FYI: we use initWithContentsOfURL and we pass it a fiel location and not a domain, that's because URL don't need to go to the internet. They can be files on your location machine
+        // NSUTF8StringEcnoding is the most common. Most things will be this, you will rarely need to say anthing else
+//            NSString *text = [[NSString alloc]initWithContentsOfURL:location encoding:NSUTF8StringEncoding error:nil];
+//            // We print out the response
+//            NSLog(@"text: %@", text);
+        //NSData is just an object that holds raw data. It doesn't interpret it into anything. Like NSString takes the data and turns it into string
+        NSData *data = [[NSData alloc]initWithContentsOfURL:location];
+        // turn raw data into json
+        //NSJSONSerialization is a class for transferting JSON into objective c objectskjj
+        // What is kNilOptions??
+        // It's just a constant for nil objects
+        NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
+        // make an array with the photos
+        // easiest way to get all the photos is to use method valueForKeyPath, which traverses through all the levels of the response dictionary. All we do is pass it the path using dot notation
+        // This will get all the elements that have this path
+        self.photos = [responseDictionary valueForKeyPath:@"data"];
+        NSLog(@"photos: %@", self.photos);
+        
+        // we need to reload the collection view on the main thread;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.collectionView reloadData];
+        });
+    }];
+    // We need to use the task we created. So we call the task:
+    [task resume];
 }
 
 @end
