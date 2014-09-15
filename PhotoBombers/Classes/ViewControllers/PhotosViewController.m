@@ -37,6 +37,9 @@
 {
     [super viewDidLoad];
     
+    // if we set the .title property on a view controller embedded in a navigation controller, then the .title will be placed in the navigation's title
+    self.title = @"Photo Bombers";
+    
     // When we call dequeReusableCellWithReuseidentifier in our cellForRowAtIndexPath, that deques a cell from the reuse que. Since we're aren't using interface builder, we are going to set this cell identifier in code.
     // for registersterClass we tell it what class to use when we ask for a cell with a certain identifier (in this cas: "photo")
     [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"photo"];
