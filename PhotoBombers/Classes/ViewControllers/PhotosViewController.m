@@ -8,6 +8,7 @@
 
 #import "PhotosViewController.h"
 #import "PhotoCell.h"
+#import <SimpleAuth/SimpleAuth.h>
 
 @interface PhotosViewController ()
 
@@ -49,27 +50,15 @@
     // we are setting the background to white so we can tell the collection view loaded (because app normally launched with black background)
     self.collectionView.backgroundColor = [UIColor whiteColor];
     
-    //we need an NSURLSession, so we get the shared session
-    // This is shared everywhere in your app
-    NSURLSession *session = [NSURLSession sharedSession];
-    // Need to make a url that we can pass to request
-    NSURL *url = [[NSURL alloc]initWithString:@"http://blog.teamtreehouse.com/api/get_recent_summary/"];
-    // Make a request that we can then pass on to our task (NSURLSessionDownloadTask)
-    NSURLRequest *request = [[NSURLRequest alloc]initWithURL:url];
-    // make an NSURLSessionDownloadTask to download data fromt he internet
-    // FYI: The data in NSURLSessionDownloadTask is downloaded for you and saved on disk; then int he completion handler you get back the location where it saved the response fromt eh netwrok
-    NSURLSessionDownloadTask *task = [session downloadTaskWithRequest:request completionHandler:^(NSURL *location, NSURLResponse *response, NSError *error) {
-        // So location it where on disk NSURLSessionDownloadTask saved teh response
-        // FYI: we use initWithContentsOfURL and we pass it a fiel location and not a domain, that's because URL don't need to go to the internet. They can be files on your location machine
-        // NSUTF8StringEcnoding is the most common. Most things will be this, you will rarely need to say anthing else
-        NSString *text = [[NSString alloc]initWithContentsOfURL:location encoding:NSUTF8StringEncoding error:nil];
-        // This will print the response headers
-        NSLog(@"Response: %@", response);
-        // This will print the response text
-        NSLog(@"Response text: %@", text);
+    // instagram signin
+    // response object is from simple auth and gives us all the information about our use
+    // So now when you open the app. the instagram sheet will come up and ask you to enter your credentials
+    [SimpleAuth authorize:@"instagram" completion:^(id responseObject, NSError *error) {
+        // The response object provides us with an access token
+        //  token - our access token. This lets' us connect to instagram later and lets us create authenticated requests
+        NSLog(@"Response: %@", responseObject);
     }];
-    // We need to use the task we created. So we call the task:
-    [task resume];
+    
 }
 
 #pragma mark - UICollectionView delegate methods

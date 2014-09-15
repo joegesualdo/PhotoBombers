@@ -1,21 +1,43 @@
 PODS:
+  - CMDQueryStringSerialization (0.3.1):
+    - ISO8601
   - Expecta (0.3.1)
+  - ISO8601 (0.1.1)
   - OCMock (3.1.1)
   - OHHTTPStubs (3.1.5):
     - OHHTTPStubs/Core
   - OHHTTPStubs/Core (3.1.5)
+  - ReactiveCocoa (2.3.1):
+    - ReactiveCocoa/UI
+  - ReactiveCocoa/Core (2.3.1):
+    - ReactiveCocoa/no-arc
+  - ReactiveCocoa/no-arc (2.3.1)
+  - ReactiveCocoa/UI (2.3.1):
+    - ReactiveCocoa/Core
+  - SimpleAuth/Core (0.3.4):
+    - CMDQueryStringSerialization
+    - ReactiveCocoa
+  - SimpleAuth/Instagram (0.3.4):
+    - SimpleAuth/UI
+  - SimpleAuth/UI (0.3.4):
+    - SimpleAuth/Core
   - Specta (0.2.1)
 
 DEPENDENCIES:
   - Expecta
   - OCMock
   - OHHTTPStubs
+  - SimpleAuth/Instagram
   - Specta
 
 SPEC CHECKSUMS:
+  CMDQueryStringSerialization: 96f05d3225b6a0f6b7445a308c9e50bf84a5ba13
   Expecta: 03aabd0a89d8dea843baecb19a7fd7466a69a31d
+  ISO8601: a6afce5fbe854024802367c814fac4aa8d3586f9
   OCMock: f6cb8c162ab9d5620dddf411282c7b2c0ee78854
   OHHTTPStubs: c1e362552b71b81e1deb7a80f44c51585b946c43
+  ReactiveCocoa: dca75777b9d18990c8714a3a6f2149f29b4d1462
+  SimpleAuth: d3a9a46c598fa088de19b708b04e0d408a813bd6
   Specta: 9141310f46b1f68b676650ff2854e1ed0b74163a
 
 COCOAPODS: 0.33.1

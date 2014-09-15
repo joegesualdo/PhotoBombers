@@ -8,12 +8,21 @@
 
 #import "AppDelegate.h"
 #import "PhotosViewController.h"
+#import <SimpleAuth/SimpleAuth.h>
 
 @implementation AppDelegate
 
 -(BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // FYI: If you are using story boardsn you only need the last line (return YES)
+    
+    // Setup Simple auth to work with instagram
+    // The redirect uri is the one we set with the providers
+    // redirect uri can be whateve you want as long as it looks like a url
+    SimpleAuth.configuration[@"instagram"] = @{
+        @"client_id" : @"f4bf8eb111f3402ead2c1b4c523687b6",
+        SimpleAuthRedirectURIKey : @"photobombers://auth/instagram"
+    };
     
     //======
     // The following lines create your application’s main window programmatically, since we aren't using story boards
