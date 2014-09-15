@@ -28,8 +28,30 @@
 -(void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    // When we call dequeReusableCellWithReuseidentifier in our cellForRowAtIndexPath, that deques a cell from the reuse que. Since we're aren't using interface builder, we are going to set this cell identifier in code.
+    // for registersterClass we tell it what class to use when we ask for a cell with a certain identifier (in this cas: "photo")
+    [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"photo"];
+    
     // we are setting the background to white so we can tell the collection view loaded (because app normally launched with black background)
     self.collectionView.backgroundColor = [UIColor whiteColor];
+}
+
+#pragma mark - UICollectionView delegate methods
+
+-(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
+{
+    return 10;
+}
+
+-(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"photo" forIndexPath:indexPath];
+    
+    // set background color of cell so you can see them on the screen
+    cell.backgroundColor = [UIColor lightGrayColor];
+    
+    return cell;
 }
 
 @end
