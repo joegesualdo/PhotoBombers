@@ -91,9 +91,21 @@
             // So location it where on disk NSURLSessionDownloadTask saved teh response
             // FYI: we use initWithContentsOfURL and we pass it a fiel location and not a domain, that's because URL don't need to go to the internet. They can be files on your location machine
             // NSUTF8StringEcnoding is the most common. Most things will be this, you will rarely need to say anthing else
-            NSString *text = [[NSString alloc]initWithContentsOfURL:location encoding:NSUTF8StringEncoding error:nil];
-            // We print out the response
-            NSLog(@"text: %@", text);
+//            NSString *text = [[NSString alloc]initWithContentsOfURL:location encoding:NSUTF8StringEncoding error:nil];
+//            // We print out the response
+//            NSLog(@"text: %@", text);
+            //NSData is just an object that holds raw data. It doesn't interpret it into anything. Like NSString takes the data and turns it into string
+            NSData *data = [[NSData alloc]initWithContentsOfURL:location];
+            // turn raw data into json
+            //NSJSONSerialization is a class for transferting JSON into objective c objectskjj
+            // What is kNilOptions??
+            // It's just a constant for nil objects
+            NSDictionary *responseDictionary = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
+            // make an array with the photos
+            // easiest way to get all the photos is to use method valueForKeyPath, which traverses through all the levels of the response dictionary. All we do is pass it the path using dot notation
+            // This will get all the elements that have this path
+            NSArray *photos = [responseDictionary valueForKeyPath:@"data.images.standard_resolution.url"];
+            NSLog(@"photos: %@", photos);
         }];
         // We need to use the task we created. So we call the task:
         [task resume];
