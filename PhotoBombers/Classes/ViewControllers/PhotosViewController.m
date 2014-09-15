@@ -20,6 +20,14 @@
 {
     // allocate and initialize the type of layout we want, and store it in a variable to pass to the init method
     UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
+    
+    // customize look of the layout
+    // set the size of each element so each items takes up 1/3 of the width. We want 3 items across
+    layout.itemSize = CGSizeMake(106.0, 106.0);
+    // set the minum space we want between our cell
+    layout.minimumInteritemSpacing = 1.0;
+    // set minimum line spaceing between our rows
+    layout.minimumLineSpacing = 1.0;
 
     // settint the type of layout on the class
     return (self = [super initWithCollectionViewLayout:layout]);
