@@ -12,6 +12,8 @@
 
 @interface PhotosViewController ()
 
+@property(strong,nonatomic)NSString *accessToken;
+
 @end
 
 @implementation PhotosViewController
@@ -50,14 +52,32 @@
     // we are setting the background to white so we can tell the collection view loaded (because app normally launched with black background)
     self.collectionView.backgroundColor = [UIColor whiteColor];
     
-    // instagram signin
-    // response object is from simple auth and gives us all the information about our use
-    // So now when you open the app. the instagram sheet will come up and ask you to enter your credentials
-    [SimpleAuth authorize:@"instagram" completion:^(NSDictionary *responseObject, NSError *error) {
-        // The response object provides us with an access token
-        //  token - our access token. This lets' us connect to instagram later and lets us create authenticated requests
-        NSLog(@"Response: %@", responseObject);
-    }];
+    // store the access token in NSUserDefaults
+    // NSUserDefaults are great because it lets you save data to disk and get it back easily. It's made for storing preferences, but it works well for storing data also
+    // FYI: NSUserDefaults ins't meant to store access tokens. You should treat access tokens like passwords. Because if someone has it, they can do whatever they want on your behalf;
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    // This will get the value for accessToken in NSUserDefaults
+    self.accessToken = [userDefaults objectForKey:@"accessToken"];
+    
+    if (self.accessToken == nil) {
+        // instagram signin
+        // response object is from simple auth and gives us all the information about our use
+        // So now when you open the app. the instagram sheet will come up and ask you to enter your credentials
+        [SimpleAuth authorize:@"instagram" completion:^(NSDictionary *responseObject, NSError *error) {
+            // The response object provides us with an access token
+            //  token - our access token. This lets' us connect to instagram later and lets us create authenticated requests
+            
+            // get our access token
+            NSString *accessToken = responseObject[@"credentials"][@"token"];
+            // This sets the value for key access token
+            [userDefaults setObject:accessToken forKey:@"accessToken"];
+            // This saves userDefaults
+            [userDefaults synchronize];
+            
+        }];
+    } else {
+        NSLog(@"Signed In!");
+    }
     
 }
 
