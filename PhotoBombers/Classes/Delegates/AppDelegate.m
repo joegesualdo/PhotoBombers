@@ -24,6 +24,13 @@
     PhotosViewController *photosViewController = [[PhotosViewController alloc]init];
     // allocate and initialize a navigation controller, WITH the photosViewController nested in it
     UINavigationController *navigationController = [[UINavigationController alloc]initWithRootViewController:photosViewController];
+    // get's the navigationBar form the navigation controller and stores it in a variable
+    UINavigationBar *navigationBar = navigationController.navigationBar;
+    // TODO: refactor the styling of the color in the navigation bar to use UIAppearance, which is the modern way to do it
+    // set barTintColor property on the navigation bar to change the color of the navigation bar
+    navigationBar.barTintColor = [UIColor colorWithRed:242.0f/255.0f green:122.0f/255.0f blue:87.0f/255.0f alpha:1.0];
+    // THis makes the the text on the navigation bar and status bar white
+    navigationBar.barStyle = UIBarStyleBlackOpaque;
     //rootViewController is the controller that is the root of the window
     // set the root view controller as our navigation controller with photos controller embedded within it
     self.window.rootViewController = navigationController;
