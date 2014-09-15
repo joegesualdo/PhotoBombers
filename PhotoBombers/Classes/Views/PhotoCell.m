@@ -92,7 +92,15 @@
 }
 
 -(void)like{
-    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Likes" message:nil delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
+    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Liked!" message:nil delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
     [alert show];
+    
+    // create a variable to hold how many seconds we want our alert to stay on screen
+    double delayInSeconds = 1.0;
+    // dispatch_after schedules events into a que. So it will put something into a que at a sepcific time.
+    // In our case, we are putting 'dismiss' alert in the que after 1 second
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [alert dismissWithClickedButtonIndex:0 animated:YES];
+    });
 }
 @end
