@@ -14,6 +14,7 @@ PODS:
   - ReactiveCocoa/no-arc (2.3.1)
   - ReactiveCocoa/UI (2.3.1):
     - ReactiveCocoa/Core
+  - SAMCache (0.3.0)
   - SimpleAuth/Core (0.3.4):
     - CMDQueryStringSerialization
     - ReactiveCocoa
@@ -27,6 +28,7 @@ DEPENDENCIES:
   - Expecta
   - OCMock
   - OHHTTPStubs
+  - SAMCache
   - SimpleAuth/Instagram
   - Specta
 
@@ -37,6 +39,7 @@ SPEC CHECKSUMS:
   OCMock: f6cb8c162ab9d5620dddf411282c7b2c0ee78854
   OHHTTPStubs: c1e362552b71b81e1deb7a80f44c51585b946c43
   ReactiveCocoa: dca75777b9d18990c8714a3a6f2149f29b4d1462
+  SAMCache: ab96161f1938a85b0fd426958fc7f36e29a9fe27
   SimpleAuth: d3a9a46c598fa088de19b708b04e0d408a813bd6
   Specta: 9141310f46b1f68b676650ff2854e1ed0b74163a
 

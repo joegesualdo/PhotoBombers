@@ -7,6 +7,7 @@
 //
 
 #import "PhotoCell.h"
+#import <SAMCache/SAMCache.h>
 
 @implementation PhotoCell
 
@@ -14,7 +15,7 @@
 -(void)setPhoto:(NSDictionary *)photo
 {
     _photo = photo;
-    NSURL *url = [[NSURL alloc]initWithString:_photo[@"images"][@"standard_resolution"][@"url"]];
+    NSURL *url = [[NSURL alloc]initWithString:_photo[@"images"][@"thumbnail"][@"url"]];
                   
     [self downloadPhotoWithURL:url];
 }
@@ -46,6 +47,17 @@
 }
 
 -(void)downloadPhotoWithURL: (NSURL *)url{
+    // we create a key by getting the instagram id fro the photo and appending 'thumbnail' to the end of it;
+    NSString *key = [[NSString alloc]initWithFormat:@"%@-thumbnail", self.photo[@"id"] ];
+    // Check the cache if the photo is already there. if it is we will return it from the cache instead of making a call to the network
+    UIImage *photo = [[SAMCache sharedCache] imageForKey:key];
+    
+    // if you already have a cache of the photo, set the photo on the cell then return
+    if (photo) {
+        self.imageView.image = photo;
+        return;
+    }
+    
     NSURLSession *session = [NSURLSession sharedSession];
     NSURLRequest *request = [[NSURLRequest alloc]initWithURL:url];
     
@@ -54,6 +66,10 @@
         NSData *data = [[NSData alloc]initWithContentsOfURL:location];
         
         UIImage *image = [[UIImage alloc]initWithData:data];
+        
+        // When you get the image, set that image to the cache with a key
+        [[SAMCache sharedCache]setImage:image forKey:key];
+        
         // This dispactches asycronously so we dont block this background que. And we are going to dispatch to the main que
         // If we wouln't have wrapped this code in this, the method wouldn't call properly because the ui isn't meant to be called from the background. This runs the code in the main thread
         dispatch_async(dispatch_get_main_queue(), ^{
